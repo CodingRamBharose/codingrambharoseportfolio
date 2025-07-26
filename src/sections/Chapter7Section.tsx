@@ -95,8 +95,8 @@ export default function Chapter7Section() {
 
               <div className="space-y-4 text-md text-gray-200 leading-relaxed">
                 <p>
-                  "Nobody in my village knew what 'coding' meant. They saw a boy who worked
-                  in fields, struggled with English, and learned on a phone."
+                  &quot;Nobody in my village knew what &apos;coding&apos; meant. They saw a boy who worked
+                  in fields, struggled with English, and learned on a phone.&quot;
                 </p>
 
                 <p>
@@ -105,8 +105,8 @@ export default function Chapter7Section() {
                 </p>
 
                 <p className="text-aviation-gold font-semibold">
-                  "From a village school to university topper — that's the power of
-                  consistency and refusing to accept limitations."
+                  &quot;From a village school to university topper — that&apos;s the power of
+                  consistency and refusing to accept limitations.&quot;
                 </p>
               </div>
             </div>
@@ -166,8 +166,8 @@ export default function Chapter7Section() {
             </div>
             <div className="mt-16 text-center flex gap-4 flex-col justify-center">
               <blockquote className="text-xl md:text-2xl font-medium text-white italic max-w-4xl mx-auto">
-                "They measured me by my background. I measured myself by my potential.
-                The results spoke for themselves."
+                &quot;They measured me by my background. I measured myself by my potential.
+                The results spoke for themselves.&quot;
               </blockquote>
               <div className="flex items-center justify-center animate-pulse">
                 <div className="text-center bg-white/5 rounded-lg !py-3 !px-6 border border-white/10">

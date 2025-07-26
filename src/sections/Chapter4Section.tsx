@@ -101,7 +101,7 @@ print(f"Result: {result}")`,
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [codeExamples.length]);
 
   return (
     <section
@@ -115,7 +115,7 @@ print(f"Result: {result}")`,
             <span className="gradient-text">Code on a Phone</span>
           </h2>
           <p className="text-lg w-full">
-            After 12th, I couldn't join B.Tech due to family issues. Everyone pushed me toward B.Sc.,
+            After 12th, I couldn&apos;t join B.Tech due to family issues. Everyone pushed me toward B.Sc.,
             but I chose BCA. I started learning Python on my phone and wrote mini games and calculators —
             all on a 5-inch screen.
           </p>
@@ -130,8 +130,8 @@ print(f"Result: {result}")`,
 
               <div className="space-y-4 text-md text-gray-200 leading-relaxed">
                 <p>
-                  "I didn't have a laptop. I didn't have a computer. But I had a smartphone
-                  and an unstoppable desire to learn coding."
+                  &quot;I didn&apos;t have a laptop. I didn&apos;t have a computer. But I had a smartphone
+                  and an unstoppable desire to learn coding.&quot;
                 </p>
 
                 <p>
@@ -140,8 +140,8 @@ print(f"Result: {result}")`,
                 </p>
 
                 <p className="text-tech-neon font-semibold">
-                  "Limitation breeds creativity. I learned to think in code before
-                  I could type it comfortably."
+                  &quot;Limitation breeds creativity. I learned to think in code before
+                  I could type it comfortably.&quot;
                 </p>
               </div>
             </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, Suspense } from 'react';
+import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image from 'next/image';
@@ -221,8 +221,8 @@ export default function Chapter8Section() {
         {/* Quote */}
         <div className="text-center w-full !mt-4">
           <blockquote className="text-xl md:text-2xl font-medium text-white italic w-full ">
-            "NCC didn't just teach me to fly aircraft. It taught me to soar above limitations,
-            to lead with purpose, and to serve with honor."
+            &quot;NCC didn&apos;t just teach me to fly aircraft. It taught me to soar above limitations,
+            to lead with purpose, and to serve with honor.&quot;
           </blockquote>
           <p className="text-aviation-gold !mt-2 text-lg font-semibold">
             — From cadet to leader, from ground to sky

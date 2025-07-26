@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
@@ -13,8 +13,8 @@ export default function SkillsSection() {
   const skillsRef = useRef<HTMLDivElement>(null);
   const circularSkillsRef = useRef<HTMLDivElement>(null);
 
-  const skills = [
- { name: 'JavaScript', level: 80, category: 'Frontend', icon: '⚡', color: 'text-yellow-400' },
+  const skills = useMemo(() => [
+    { name: 'JavaScript', level: 80, category: 'Frontend', icon: '⚡', color: 'text-yellow-400' },
     { name: 'React', level: 75, category: 'Frontend', icon: '⚛️', color: 'text-cyan-400' },
     { name: 'Next.js', level: 75, category: 'Frontend', icon: '▲', color: 'text-white' },
     { name: 'TypeScript', level: 65, category: 'Frontend', icon: '📘', color: 'text-blue-500' },
@@ -38,16 +38,16 @@ export default function SkillsSection() {
     { name: 'Grafana', level: 45, category: 'DevOps', icon: '📊', color: 'text-amber-400' },
 
     { name: 'AWS', level: 40, category: 'Cloud', icon: '☁️', color: 'text-orange-500' }
-  ];
+  ], []);
 
-  const circularSkills = [
+  const circularSkills = useMemo(() => [
     { name: 'Problem Solving', level: 80, color: 'tech-neon' },
     { name: 'Team Leadership', level: 85, color: 'aviation-gold' },
     { name: 'Communication', level: 80, color: 'tech-cyan' },
     { name: 'Adaptability', level: 92, color: 'earth-wheat' }
-  ];
+  ], []);
 
-  const categories = ['Frontend', 'Backend', 'Database', 'AI/ML', 'Tools', 'DevOps', 'Cloud'];
+  const categories = useMemo(() => ['Frontend', 'Backend', 'Database', 'AI/ML', 'Tools', 'DevOps', 'Cloud'], []);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -162,7 +162,7 @@ export default function SkillsSection() {
     }, sectionRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [skills, circularSkills, sectionRef, skillsRef, circularSkillsRef]);
 
   const getSkillsByCategory = (category: string) => {
     return skills.filter(skill => skill.category === category);
@@ -193,7 +193,7 @@ export default function SkillsSection() {
           </h3>
 
           <div ref={circularSkillsRef} className="grid md:grid-cols-4 gap-8 w-full items-center justify-between">
-            {circularSkills.map((skill, index) => (
+            {circularSkills.map((skill) => (
               <div key={skill.name} className="text-center flex items-center justify-center flex-col">
                 <div className="relative w-32 h-32 mx-auto mb-4">
                   <svg className="w-32 h-32 transform -rotate-90" viewBox="0 0 120 120">
@@ -298,8 +298,8 @@ export default function SkillsSection() {
         {/* Quote */}
         <div className="mt-16 text-center w-full">
           <blockquote className="text-xl md:text-2xl font-medium text-white italic w-full">
-            "Every skill I've learned started with curiosity and was mastered through persistence.
-            From coding on a phone to building complex systems - the journey never stops."
+            &quot;Every skill I&apos;ve learned started with curiosity and was mastered through persistence.
+            From coding on a phone to building complex systems - the journey never stops.&quot;
           </blockquote>
           <p className="text-tech-neon text-lg font-semibold !mt-2">
             — Continuous learning, continuous growth

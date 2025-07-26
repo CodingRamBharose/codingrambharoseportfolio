@@ -88,7 +88,7 @@ export default function Chapter2Section() {
                   I studied in Punjabi medium till class 10, and my native language is Punjabi. Suddenly switching to English medium in class 11 felt like being thrown into a foreign world.
                 </p>
                 <p className="mb-4">
-                  "The teacher is explaining something about physics, but I can't understand. Everyone around me is nodding, taking notes. I'm just sitting there, feeling invisible."
+                  &quot;The teacher is explaining something about physics, but I can&apos;t understand. Everyone around me is nodding, taking notes. I&apos;m just sitting there, feeling invisible.&quot;
                 </p>
               </div>
             </div>
@@ -105,7 +105,7 @@ export default function Chapter2Section() {
                   I started watching simple English cartoons, using Google Translate for everything, and asking friends for help. I didn’t magically become fluent, but I learned to survive, step by step.
                 </p>
                 <p className="font-semibold text-yellow-300">
-                  "Hard work beats talent when talent doesn't work hard."
+                  &quot;Hard work beats talent when talent doesn&apos;t work hard.&quot;
                 </p>
               </div>
             </div>
@@ -113,7 +113,7 @@ export default function Chapter2Section() {
 
           <div className="text-center flex flex-col justify-center gap-4">
             <blockquote className="text-2xl md:text-2xl font-medium text-white italic max-w-2xl mx-auto">
-              "I didn't just learn English. I learned that any barrier can be broken with enough determination and the right approach."
+              &quot;I didn&apos;t just learn English. I learned that any barrier can be broken with enough determination and the right approach.&quot;
             </blockquote>
             <p className="text-gray-400 mt-4 text-lg">
               — The moment I realized I could learn anything

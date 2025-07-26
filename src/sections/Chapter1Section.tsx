@@ -17,7 +17,7 @@ export default function Chapter1Section() {
 
   // 🟡 Sync background with Hero's scroll progress (with reversed gradient)
   useEffect(() => {
-    const handleProgress = (e: any) => {
+    const handleProgress = (e: CustomEvent<number>) => {
       const progress = e.detail;
 
       // Exact same colors as Hero section
@@ -43,9 +43,9 @@ export default function Chapter1Section() {
       }
     };
 
-    window.addEventListener('sunriseProgress', handleProgress);
+    window.addEventListener('sunriseProgress', handleProgress as EventListener);
     return () => {
-      window.removeEventListener('sunriseProgress', handleProgress);
+      window.removeEventListener('sunriseProgress', handleProgress as EventListener);
     };
   }, []);
 
@@ -214,8 +214,8 @@ export default function Chapter1Section() {
 
               <div className="mt-8 text-center">
                 <blockquote className="text-xl font-medium text-white italic">
-                  "Discipline is not about punishment. <br />
-                  It's about training yourself to do what needs to be done."
+                  &quot;Discipline is not about punishment. <br />
+                  It&apos;s about training yourself to do what needs to be done.&quot;
                 </blockquote>
               </div>
             </div>

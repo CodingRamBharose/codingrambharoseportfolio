@@ -74,7 +74,7 @@ export default function Chapter6Section() {
           </h2>
           <p className="text-xl w-full">
             In BCA Year 2, long hours of field work + coding gave me disc bulge. For 6 months,
-            I couldn't sit. But I didn't stop. I watched tutorials on my phone. I studied lying on the floor.
+            I couldn&apos;t sit. But I didn&apos;t stop. I watched tutorials on my phone. I studied lying on the floor.
           </p>
         </div>
 
@@ -92,8 +92,8 @@ export default function Chapter6Section() {
                 <div className="bg-red-500/10 rounded-lg !p-3 flex-1 border border-red-500/30">
                   <h4 className="font-semibold text-red-400 mb-2">Month 1: The Diagnosis</h4>
                   <p className="text-gray-300 text-sm">
-                    "Doctor said complete bed rest. No sitting for extended periods.
-                    My coding dreams seemed shattered."
+                    &quot;Doctor said complete bed rest. No sitting for extended periods.
+                    My coding dreams seemed shattered.&quot;
                   </p>
                 </div>
               </div>
@@ -103,8 +103,8 @@ export default function Chapter6Section() {
                 <div className="bg-orange-500/10 rounded-lg !p-3 flex-1 border border-orange-500/30">
                   <h4 className="font-semibold text-orange-400 mb-2">Month 2: Adaptation</h4>
                   <p className="text-gray-300 text-sm">
-                    "Started watching coding tutorials lying down. Phone became my classroom.
-                    YouTube University was in session."
+                    &quot;Started watching coding tutorials lying down. Phone became my classroom.
+                    YouTube University was in session.&quot;
                   </p>
                 </div>
               </div>
@@ -114,8 +114,8 @@ export default function Chapter6Section() {
                 <div className="bg-yellow-500/10 rounded-lg !p-3 flex-1 border border-yellow-500/30">
                   <h4 className="font-semibold text-yellow-400 mb-2">Month 3-4: Mental Coding</h4>
                   <p className="text-gray-300 text-sm">
-                    "Learned to visualize code in my head. Solved problems mentally.
-                    Theory became my strength."
+                    &quot;Learned to visualize code in my head. Solved problems mentally.
+                    Theory became my strength.&quot;
                   </p>
                 </div>
               </div>
@@ -125,8 +125,8 @@ export default function Chapter6Section() {
                 <div className="bg-green-500/10 rounded-lg !p-3 flex-1 border border-green-500/30">
                   <h4 className="font-semibold text-green-400 mb-2">Month 5: Gradual Return</h4>
                   <p className="text-gray-300 text-sm">
-                    "Started sitting for short periods. Every 15 minutes felt like a victory.
-                    Slowly getting back to coding."
+                    &quot;Started sitting for short periods. Every 15 minutes felt like a victory.
+                    Slowly getting back to coding.&quot;
                   </p>
                 </div>
               </div>
@@ -136,8 +136,8 @@ export default function Chapter6Section() {
                 <div className="bg-tech-neon/10 rounded-lg !p-3 flex-1 border border-tech-neon/30">
                   <h4 className="font-semibold text-tech-neon mb-2">Month 6: Stronger Than Before</h4>
                   <p className="text-gray-300 text-sm">
-                    "Full recovery. But now I had discipline, patience, and a deeper
-                    understanding of perseverance."
+                    &quot;Full recovery. But now I had discipline, patience, and a deeper
+                    understanding of perseverance.&quot;
                   </p>
                 </div>
               </div>
@@ -161,7 +161,7 @@ export default function Chapter6Section() {
                   </div>
 
                   {/* Phone */}
-                  <div className="bg-tech-midnight rounded-lg p-4 border border-white/20 !p-2">
+                  <div className="bg-tech-midnight rounded-lg border border-white/20 !p-2">
                     <div className="text-3xl mb-2">📱</div>
                     <p className="text-tech-neon font-semibold">Mobile Learning</p>
                     <p className="text-gray-300 text-xs">YouTube tutorials, documentation, forums</p>
@@ -240,7 +240,7 @@ export default function Chapter6Section() {
               <div className="text-3xl mb-3">🔥</div>
               <h4 className="font-semibold text-white mb-2">Persistence</h4>
               <p className="text-gray-300 text-sm">
-                Physical limitations can't stop mental growth and determination.
+                Physical limitations can&apos;t stop mental growth and determination.
               </p>
             </div>
 
@@ -257,8 +257,8 @@ export default function Chapter6Section() {
         {/* Quote */}
         <div className="flex items-center justify-center flex-col">
           <blockquote className="text-xl md:text-2xl font-medium text-white italic max-w-4xl mx-auto">
-            "That pain taught me power. When you can't sit, you learn to think.
-            When you can't type, you learn to visualize. Limitations become innovations."
+            &quot;That pain taught me power. When you can&apos;t sit, you learn to think.
+            When you can&apos;t type, you learn to visualize. Limitations become innovations.&quot;
           </blockquote>
           <p className="text-tech-neon mt-4 text-lg font-semibold">
             — Turning setbacks into comebacks

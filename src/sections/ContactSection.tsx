@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { Mail, Phone, MapPin, Linkedin, Github, Send, Download } from 'lucide-react';
+import { Mail, MapPin, Linkedin, Github, Send, Download } from 'lucide-react';
 import emailjs from '@emailjs/browser';
 
 if (typeof window !== 'undefined') {
@@ -123,11 +123,11 @@ export default function ContactSection() {
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         <div className='w-full flex flex-col gap-6'>
           <h2 className="font-poppins font-bold text-4xl md:text-6xl text-white mb-8">
-            Let's <span className="gradient-text">Connect</span>
+            Let&apos;s <span className="gradient-text">Connect</span>
           </h2>
           <p className="text-xl text-gray-300 mx-auto">
             Thank you for walking through my journey. Whether you want to collaborate on a project,
-            discuss opportunities, or just say hello - I'd love to hear from you.
+            discuss opportunities, or just say hello - I&apos;d love to hear from you.
           </p>
         </div>
 
@@ -140,7 +140,7 @@ export default function ContactSection() {
                 Get in Touch
               </h3>
               <p className="text-gray-300 leading-relaxed mb-8">
-                I'm always open to discussing new opportunities, interesting projects,
+                I&apos;m always open to discussing new opportunities, interesting projects,
                 or just having a conversation about technology and innovation.
                 Feel free to reach out through any of the channels below.
               </p>
@@ -295,8 +295,8 @@ export default function ContactSection() {
         {/* Final Quote */}
         <div className="mt-16 text-center">
           <blockquote className="text-xl md:text-2xl font-medium text-white italic">
-            "This is my story — a story of roots, code, and resilience.
-            Let's build something meaningful together."
+            &quot;This is my story — a story of roots, code, and resilience.
+            Let&apos;s build something meaningful together.&quot;
           </blockquote>
           <p className="text-tech-neon !mt-2 text-lg font-semibold">
             — Ready for the next chapter
