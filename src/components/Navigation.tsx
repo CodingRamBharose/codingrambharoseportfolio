@@ -16,8 +16,8 @@ export default function Navigation() {
     { id: 'chapter-6', label: 'Recovery', icon: '💪' },
     { id: 'chapter-7', label: 'Academic Excellence', icon: '🏆' },
     { id: 'chapter-8', label: 'NCC Aviation', icon: '✈️' },
-    { id: 'projects', label: 'Projects', icon: '💻' },
     { id: 'skills', label: 'Skills', icon: '🛠️' },
+    { id: 'projects', label: 'Projects', icon: '💻' },
     { id: 'contact', label: 'Contact', icon: '📞' },
   ];
 

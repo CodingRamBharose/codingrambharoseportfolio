@@ -187,7 +187,7 @@ export default function ContactSection() {
 
                 {/* Resume Button with Icon */}
                 <a
-                  href="/resume.pdf"
+                  href="/Ram_Avtar.pdf"
                   target="_blank"
                   className="flex h-10 w-28 justify-center items-center gap-2 rounded-full bg-transparent hover:bg-white/10 text-gray-200 font-semibold px-4 py-3 transition-all duration-300 transform hover:scale-105"
                 >
