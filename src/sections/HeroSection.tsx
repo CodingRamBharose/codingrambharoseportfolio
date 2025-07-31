@@ -81,7 +81,7 @@ export default function HeroSection() {
     <section
       ref={heroRef}
       id="hero"
-      className="relative min-h-screen flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-around gap-12 px-6 md:px-12 lg:px-10 overflow-x-hidden"
+      className="relative min-h-screen flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-around gap-12 !px-6 md:!px-10 lg:!px-10 overflow-x-hidden"
     >
       <div
         ref={skyRef}
