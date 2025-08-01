@@ -74,7 +74,7 @@ export default function Chapter8Section() {
     >
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         <div className='w-full flex flex-col gap-6'>
-          <h2 className="font-poppins font-bold text-4xl md:text-6xl text-white mb-8">
+          <h2 className="font-poppins font-bold text-4xl md:text-5xl text-white mb-8">
             <span className="gradient-text">Airborne with NCC</span>
           </h2>
           <p className="text-xl w-full">

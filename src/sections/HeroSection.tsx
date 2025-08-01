@@ -81,14 +81,14 @@ export default function HeroSection() {
     <section
       ref={heroRef}
       id="hero"
-      className="relative min-h-screen flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-around gap-12 !px-6 md:!px-10 lg:!px-10 overflow-x-hidden"
+      className="relative min-h-screen flex flex-col-reverse lg:flex-row items-center justify-center lg:justify-around gap-12 overflow-x-hidden section-padding"
     >
       <div
         ref={skyRef}
         className="absolute inset-0 z-0"
         style={{ background: 'linear-gradient(to bottom, rgb(15, 32, 72), rgb(25, 42, 82))' }}
       />
-      <div className="absolute top-6 left-6 md:top-8 md:left-10 lg:top-0 lg:left-10 z-30">
+      <div className="absolute hidden md:block md:top-0 md:left-10 lg:top-0 lg:left-10 z-30">
         <Image src={logo} alt="Logo" width={130} height={60} />
       </div>
       <div

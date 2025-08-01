@@ -176,7 +176,7 @@ export default function SkillsSection() {
     >
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         <div className='w-full flex flex-col gap-6'>
-          <h2 className="font-poppins font-bold text-4xl md:text-6xl text-white mb-8">
+          <h2 className="font-poppins font-bold text-4xl md:text-5xl text-white mb-8">
             Skills & <span className="gradient-text">Technologies</span>
           </h2>
           <p className="text-xl w-full">
@@ -192,7 +192,7 @@ export default function SkillsSection() {
             Core Strengths
           </h3>
 
-          <div ref={circularSkillsRef} className="grid md:grid-cols-4 gap-8 w-full items-center justify-between">
+          <div ref={circularSkillsRef} className="grid grid-cols-2 md:grid-cols-4 gap-8 w-full items-center justify-between">
             {circularSkills.map((skill) => (
               <div key={skill.name} className="text-center flex items-center justify-center flex-col">
                 <div className="relative w-32 h-32 mx-auto mb-4">

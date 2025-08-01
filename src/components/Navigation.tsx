@@ -54,7 +54,7 @@ export default function Navigation() {
   return (
     <>
       <nav 
-        className="space-y-4"
+        className="space-y-4 hidden md:block"
         style={{ 
           position: 'fixed',
           right: '20px',

@@ -188,7 +188,7 @@ export default function Chapter1Section() {
             </div>
 
           <div ref={imageRef} className="relative">
-            <div className="relative flex flex-col gap-5 bg-gradient-to-br from-earth-grass to-earth-wheat rounded-2xl p-8 h-[45vh] w-[45vw] shadow-2xl">
+            <div className="relative flex flex-col gap-5 bg-gradient-to-br from-earth-grass to-earth-wheat rounded-2xl p-8 h-full w-full md:h-[45vh] md:w-[45vw] shadow-2xl">
 
               <div className="grid grid-cols-2 gap-6">
                 <div className="bg-earth-soil/30 rounded-lg p-6 text-center">
