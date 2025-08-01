@@ -8,6 +8,7 @@ import { ChevronDown, Download, Github, Linkedin, Mail } from 'lucide-react';
 import Image from 'next/image';
 import banner from '../assets/banner.png';
 import logo from '../assets/logo.png';
+import LeetCodeIcon from '@/components/LeetCodeIcon';
 
 if (typeof window !== 'undefined') {
   gsap.registerPlugin(ScrollTrigger);
@@ -127,6 +128,11 @@ export default function HeroSection() {
           <a href="https://github.com/CodingRamBharose" target="_blank" className="p-3 h-10 w-10 flex items-center justify-center rounded-full bg-trasparent hover:bg-white/10 transition-colors duration-300">
             <Github className="w-6 h-6 text-gray-200" />
           </a>
+
+          <a href="https://leetcode.com/u/CodingRamBharose/" target="_blank" className="p-3 h-10 w-10 flex items-center justify-center rounded-full bg-trasparent hover:bg-white/10 transition-colors duration-300">
+            <LeetCodeIcon className="w-6 h-6 text-amber-400" />
+          </a>
+
 
           <a href="mailto:codingrambharose@gmail.com" target="_blank" className="p-3 h-10 w-10 flex items-center justify-center rounded-full bg-trasparent hover:bg-white/10 transition-colors duration-300">
             <Mail className="w-6 h-6 text-red-300" />
