@@ -166,10 +166,10 @@ export default function Chapter1Section() {
         style={{ background: 'linear-gradient(to bottom, rgb(15, 42, 82), rgb(15, 32, 72))' }}
       />
 
-      <div className="relative z-10 max-w-6xl mx-auto">
+      <div className="relative z-10 max-w-6xl mx-auto ">
         <h2
           ref={titleRef}
-          className="font-poppins font-bold text-4xl md:text-5xl text-white mb-8 w-full h-16"
+          className="font-poppins font-bold text-4xl md:text-5xl  text-white !mb-8 md:!mb-0 w-full h-16"
         >
           <span className="gradient-text">Rooted in Discipline</span>
         </h2>

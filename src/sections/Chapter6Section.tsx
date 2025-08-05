@@ -255,8 +255,8 @@ export default function Chapter6Section() {
         </div>
 
         {/* Quote */}
-        <div className="flex items-center justify-center flex-col">
-          <blockquote className="text-xl md:text-2xl font-medium text-white italic max-w-4xl mx-auto">
+        <div className="text-center w-full !mt-4">
+          <blockquote className="text-xl md:text-2xl font-medium text-white italic w-full">
             &quot;That pain taught me power. When you can&apos;t sit, you learn to think.
             When you can&apos;t type, you learn to visualize. Limitations become innovations.&quot;
           </blockquote>
