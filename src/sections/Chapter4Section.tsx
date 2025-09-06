@@ -115,7 +115,7 @@ print(f"Result: {result}")`,
             <span className="gradient-text">Code on a Phone</span>
           </h2>
           <p className="text-lg w-full">
-            After 12th, I couldn&apos;t join B.Tech due to family issues. Everyone pushed me toward B.Sc.,
+            After 12th, I couldn&apos;t join B.Tech. Everyone pushed me toward B.Sc.,
             but I chose BCA. I started learning Python on my phone and wrote mini games and calculators —
             all on a 5-inch screen.
           </p>
