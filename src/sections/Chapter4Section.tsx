@@ -148,23 +148,23 @@ print(f"Result: {result}")`,
 
             <div className="bg-earth-wheat/10 backdrop-blur-sm rounded-lg p-6 border border-earth-wheat/30 w-full">
               <h4 className="font-semibold text-earth-wheat mb-4 h-8 flex items-center justify-center">What I Built on My Phone:</h4>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-white/5 rounded p-3 text-center">
+              <div className="grid grid-cols-2 gap-4 !p-2">
+                <div className="bg-white/5 rounded text-center !p-1">
                   <div className="text-2xl mb-2">👋</div>
                   <p className="text-sm text-gray-300">Hello World</p>
                 </div>
 
-                <div className="bg-white/5 rounded p-3 text-center">
+                <div className="bg-white/5 rounded !p-1 text-center">
                   <div className="text-2xl mb-2">🔢</div>
                   <p className="text-sm text-gray-300">Math Solvers</p>
                 </div>
 
-                <div className="bg-white/5 rounded p-3 text-center">
+                <div className="bg-white/5 rounded !p-1 text-center">
                   <div className="text-2xl mb-2">🎮</div>
                   <p className="text-sm text-gray-300">Number Guessing Game</p>
                 </div>
 
-                <div className="bg-white/5 rounded p-3 text-center">
+                <div className="bg-white/5 rounded !p-1 text-center">
                   <div className="text-2xl mb-2">🧮</div>
                   <p className="text-sm text-gray-300">Basic Calculator</p>
                 </div>
