@@ -5,6 +5,7 @@ import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Image, { StaticImageData } from 'next/image';
 import { ExternalLink, Github } from 'lucide-react';
+import TiltCard from '@/components/TiltCard';
 import soilsocial from '../assets/projects/soilsocial.png';
 import triloq from '../assets/projects/triloq.png';
 import aiquizapp from '../assets/projects/aiquizapp.png';
@@ -69,6 +70,9 @@ export default function ProjectsSection() {
   const scrollingRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
+    // Only run the split/pin animation on desktop (768px+)
+    if (window.innerWidth < 768) return;
+
     const timer = setTimeout(() => {
       const ctx = gsap.context(() => {
         if (!sectionRef.current || !containerRef.current || !featuredRef.current || !scrollingRef.current) return;
@@ -89,7 +93,6 @@ export default function ProjectsSection() {
           .to(featuredRef.current, { width: '50%', ease: 'none' })
           .to(scrollingRef.current, { width: '50%', x: '0%', ease: 'none' }, '<');
 
-        // This calculation now works because scrollingRef has an explicit, reliable height.
         const scrollDistance = scrollingRef.current.offsetHeight - featuredRef.current.offsetHeight;
 
         const pinTl = gsap.timeline({
@@ -99,7 +102,7 @@ export default function ProjectsSection() {
             start: 'top top',
             end: `+=${scrollDistance}`,
             pinSpacing: true,
-            pinReparent: true, // This is essential to prevent content from disappearing
+            pinReparent: true,
             scrub: 1,
             invalidateOnRefresh: true,
           },
@@ -120,6 +123,9 @@ export default function ProjectsSection() {
     return () => clearTimeout(timer);
   }, []);
 
+  // All projects combined for mobile view
+  const allProjects = [featuredProject, ...scrollingProjects];
+
   return (
     <section
       id="projects"
@@ -127,21 +133,59 @@ export default function ProjectsSection() {
       className="relative flex flex-col gap-5 section-padding bg-gradient-to-b from-[#192A52] to-[#0F2048]"
     >
       <div className='w-full flex flex-col gap-6'>
-        <h2 className="font-poppins font-bold text-4xl md:text-5xl text-white">
+        <h2 className="font-poppins font-bold text-white" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
           <span className="gradient-text">Projects</span>
         </h2>
-        <p className="text-lg w-full">
+        <p className="text-base sm:text-lg w-full text-gray-300">
           Innovative solutions built with cutting-edge technologies
         </p>
       </div>
+
+      {/* ===== MOBILE: Simple stacked cards (visible < md) ===== */}
+      <div className="flex flex-col gap-6 md:hidden mt-4">
+        {allProjects.map((project, index) => (
+          <TiltCard
+            key={index}
+            className="bg-white/5 rounded-xl p-3 border border-white/10 hover:border-tech-neon/50 transition-all duration-300 backdrop-blur-sm w-full group"
+          >
+            <div className="relative h-48 sm:h-56 w-full mb-4 rounded-lg overflow-hidden">
+              <Image
+                src={project.image}
+                alt={project.title}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+            </div>
+            <h3 className="text-base sm:text-lg font-bold text-white mb-2">{project.title}</h3>
+            <p className="text-gray-300 mb-4 text-sm leading-relaxed line-clamp-3">{project.description}</p>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {project.technologies.map((tech) => (
+                <span key={tech} className="px-2 py-1 text-[11px] bg-white/5 rounded-md text-gray-400 border border-white/10">
+                  {tech}
+                </span>
+              ))}
+            </div>
+            <a
+              href={project.githubUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-300 hover:text-tech-neon transition-colors w-fit"
+            >
+              <Github className="w-4 h-4" /> View Code
+            </a>
+          </TiltCard>
+        ))}
+      </div>
+
+      {/* ===== DESKTOP: Split pin-scroll layout (visible md+) ===== */}
       <div
         ref={containerRef}
-        className="h-screen w-full flex flex-col md:flex-row overflow-hidden mt-4"
+        className="h-screen w-full hidden md:flex flex-row overflow-hidden mt-4"
       >
         {/* Left Featured Project */}
         <div ref={featuredRef} className="h-full w-1/2 flex-shrink-0 flex flex-col items-center justify-center p-8 relative">
-
-          <div className="bg-white/5 rounded-2xl flex flex-col gap-1 !px-4 !py-2 border border-white/10 max-w-4xl w-full backdrop-blur-sm mt-24">
+          <TiltCard className="bg-white/5 rounded-2xl flex flex-col gap-1 !px-4 !py-2 border border-white/10 max-w-4xl w-full backdrop-blur-sm mt-24 hover:border-tech-neon/40 transition-colors duration-300">
             <div className="relative h-60 md:h-96 mb-6 rounded-lg overflow-hidden min-w-[300px]">
               <Image
                 src={featuredProject.image}
@@ -162,28 +206,24 @@ export default function ProjectsSection() {
               ))}
             </div>
             <div className="flex gap-4">
-              {/* <a href={featuredProject.liveUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 py-3 bg-tech-neon text-tech-midnight rounded-lg hover:bg-tech-cyan transition-all duration-300 font-semibold">
-                <ExternalLink className="w-5 h-5" /> Live Demo
-              </a> */}
               <a href={featuredProject.githubUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 px-6 text-sm py-3 text-white rounded-lg transition-all duration-300 font-semibold">
                 <Github className="w-3 h-3" /> View Code
               </a>
             </div>
-          </div>
+          </TiltCard>
         </div>
 
         {/* Right Scrolling Projects */}
         <div
           ref={scrollingRef}
           className="w-1/2 flex-shrink-0 relative"
-          // Set explicit height dynamically to ensure reliable calculations
           style={{ height: `${scrollingProjects.length * 100}vh` }}
         >
           {scrollingProjects.map((project, index) => (
             <div key={index} className="h-screen flex items-center justify-center p-8">
-              <div className="bg-white/5 rounded-xl !p-2 border flex gap-2 flex-col border-white/10 hover:border-tech-neon/50 transition-all duration-300 backdrop-blur-sm max-w-lg w-full">
+              <TiltCard className="bg-white/5 rounded-xl !p-2 border flex gap-2 flex-col border-white/10 hover:border-tech-neon/50 transition-all duration-300 backdrop-blur-sm max-w-lg w-full group">
                 <div className="relative h-64 w-full mb-6 rounded-lg overflow-hidden">
-                  <Image src={project.image} alt={project.title} fill className="object-cover" />
+                  <Image src={project.image} alt={project.title} fill className="object-cover transition-transform duration-500 group-hover:scale-105" />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 </div>
                 <h4 className="text-sm font-bold text-white mb-4">{project.title}</h4>
@@ -196,14 +236,11 @@ export default function ProjectsSection() {
                   ))}
                 </div>
                 <div className="flex gap-3">
-                  {/* <a href={project.liveUrl} className="flex items-center gap-2 px-4 py-2 bg-tech-neon/20 text-tech-neon rounded-lg hover:bg-tech-neon/30 transition-all duration-300">
-                    <ExternalLink className="w-4 h-4" /> Live Demo
-                  </a> */}
                   <a href={project.githubUrl} className="flex items-center gap-2 px-4 py-2 text-gray-300 transition-all duration-300">
                     <Github className="w-4 h-4" /> Code
                   </a>
                 </div>
-              </div>
+              </TiltCard>
             </div>
           ))}
         </div>

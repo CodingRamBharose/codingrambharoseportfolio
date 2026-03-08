@@ -118,6 +118,78 @@ button, a, .interactive {
   transition: all 0.3s ease;
 }
 
+/* Animated gradient border for glassmorphism cards */
+@property --gradient-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  position: relative;
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: conic-gradient(from var(--gradient-angle), transparent 40%, #64FFDA 50%, #42A5F5 60%, transparent 70%);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.glass-card:hover::before {
+  opacity: 1;
+  animation: spin-border 3s linear infinite;
+}
+
+@keyframes spin-border {
+  to {
+    --gradient-angle: 360deg;
+  }
+}
+
+/* Text gradient animation */
+.animated-gradient-text {
+  background: linear-gradient(270deg, #64FFDA, #42A5F5, #FFD700, #64FFDA);
+  background-size: 300% 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: gradient-shift 6s ease infinite;
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* Scroll snap for chapter reading */
+.snap-section {
+  scroll-snap-align: start;
+  scroll-snap-stop: normal;
+}
+
+/* Floating animation with subtle rotation */
+@keyframes float-rotate {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  25% { transform: translateY(-8px) rotate(1deg); }
+  75% { transform: translateY(-4px) rotate(-1deg); }
+}
+
+.float-rotate {
+  animation: float-rotate 4s ease-in-out infinite;
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {

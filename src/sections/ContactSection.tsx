@@ -122,7 +122,7 @@ export default function ContactSection() {
     >
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         <div className='w-full flex flex-col gap-6'>
-          <h2 className="font-poppins font-bold text-4xl md:text-5xl text-white mb-8">
+          <h2 className="font-poppins font-bold text-white mb-8" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
             Let&apos;s <span className="gradient-text">Connect</span>
           </h2>
           <p className="text-xl text-gray-300 mx-auto">
@@ -148,23 +148,23 @@ export default function ContactSection() {
 
             {/* Contact Methods */}
             <div className="space-y-3">
-              <div className="flex items-center space-x-4 bg-white/5 rounded-lg !p-2 border border-white/10 hover:border-tech-neon/50 transition-colors">
-                <div className="w-12 h-12 bg-tech-neon/20 rounded-lg flex items-center justify-center">
+              <div className="flex items-center space-x-4 glass-card !p-3 hover:border-tech-neon/50 transition-colors">
+                <div className="w-12 h-12 bg-tech-neon/20 rounded-lg flex items-center justify-center flex-shrink-0">
                   <Mail className="w-6 h-6 text-tech-neon" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-white">Email</h4>
-                  <p className="text-gray-300">ramavtar.crb@gmail.com</p>
+                  <p className="text-gray-300 text-sm sm:text-base">ramavtar.crb@gmail.com</p>
                 </div>
               </div>
 
-              <div className="flex items-center space-x-4 bg-white/5 rounded-lg !p-2 border border-white/10 hover:border-aviation-gold/50 transition-colors">
-                <div className="w-12 h-12 bg-aviation-gold/20 rounded-lg flex items-center justify-center">
+              <div className="flex items-center space-x-4 glass-card !p-3 hover:border-aviation-gold/50 transition-colors">
+                <div className="w-12 h-12 bg-aviation-gold/20 rounded-lg flex items-center justify-center flex-shrink-0">
                   <MapPin className="w-6 h-6 text-aviation-gold" />
                 </div>
                 <div>
                   <h4 className="font-semibold text-white">Location</h4>
-                  <p className="text-gray-300">Punjab, India</p>
+                  <p className="text-gray-300 text-sm sm:text-base">Punjab, India</p>
                 </div>
               </div>
             </div>
@@ -200,7 +200,7 @@ export default function ContactSection() {
 
           {/* Contact Form */}
           <div className='overflow-hidden'>
-            <form ref={formRef} onSubmit={handleSubmit} className="bg-white/5 rounded-lg !p-2 border border-white/10 backdrop-blur-sm">
+            <form ref={formRef} onSubmit={handleSubmit} className="glass-card !p-4 sm:!p-6">
               <h3 className="font-poppins font-semibold text-2xl text-white !mb-2">
                 Send a Message
               </h3>

@@ -191,26 +191,26 @@ export default function Chapter8Section() {
             What NCC Gave Me
           </h3>
 
-          <div ref={achievementsRef} className="grid md:grid-cols-4 gap-6">
-            <div className="text-center bg-white/5 rounded-lg p-6 border border-white/10">
+          <div ref={achievementsRef} className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+            <div className="text-center glass-card !p-4 sm:!p-6">
               <div className="text-4xl mb-3">⏰</div>
               <h4 className="font-semibold text-aviation-gold mb-2">Discipline</h4>
               <p className="text-gray-300 text-sm">4 AM wake-ups became a lifestyle</p>
             </div>
 
-            <div className="text-center bg-white/5 rounded-lg p-6 border border-white/10">
+            <div className="text-center glass-card !p-4 sm:!p-6">
               <div className="text-4xl mb-3">👥</div>
               <h4 className="font-semibold text-tech-neon mb-2">Leadership</h4>
               <p className="text-gray-300 text-sm">Leading teams under pressure</p>
             </div>
 
-            <div className="text-center bg-white/5 rounded-lg p-6 border border-white/10">
+            <div className="text-center glass-card !p-4 sm:!p-6">
               <div className="text-4xl mb-3">💪</div>
               <h4 className="font-semibold text-earth-wheat mb-2">Resilience</h4>
               <p className="text-gray-300 text-sm">Mental and physical toughness</p>
             </div>
 
-            <div className="text-center bg-white/5 rounded-lg p-6 border border-white/10">
+            <div className="text-center glass-card !p-4 sm:!p-6">
               <div className="text-4xl mb-3">🎯</div>
               <h4 className="font-semibold text-tech-cyan mb-2">Precision</h4>
               <p className="text-gray-300 text-sm">Attention to detail and excellence</p>

@@ -176,7 +176,7 @@ export default function SkillsSection() {
     >
       <div className="max-w-6xl mx-auto flex flex-col gap-6">
         <div className='w-full flex flex-col gap-6'>
-          <h2 className="font-poppins font-bold text-4xl md:text-5xl text-white mb-8">
+          <h2 className="font-poppins font-bold text-white mb-8" style={{ fontSize: 'clamp(2rem, 5vw, 3rem)' }}>
             Skills & <span className="gradient-text">Technologies</span>
           </h2>
           <p className="text-xl w-full">
@@ -248,7 +248,7 @@ export default function SkillsSection() {
               if (categorySkills.length === 0) return null;
 
               return (
-                <div key={category} className="bg-white/5 rounded-lg !p-6 border border-white/10">
+                <div key={category} className="glass-card !p-6">
                   <h4 className="font-semibold text-tech-neon !mb-4 text-lg">{category}</h4>
                   <div className="space-y-4">
                     {categorySkills.map((skill) => (

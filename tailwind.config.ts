@@ -42,6 +42,8 @@ const config: Config = {
         'slide-up': 'slideUp 0.8s ease-out',
         'float': 'float 3s ease-in-out infinite',
         'glow': 'glow 2s ease-in-out infinite alternate',
+        'pulse-slow': 'pulse 3s ease-in-out infinite',
+        'spin-slow': 'spin 8s linear infinite',
       },
       keyframes: {
         fadeIn: {
@@ -58,8 +60,11 @@ const config: Config = {
         },
         glow: {
           '0%': { boxShadow: '0 0 5px rgba(100, 255, 218, 0.5)' },
-          '100%': { boxShadow: '0 0 20px rgba(100, 255, 218, 0.8)' },
+          '100%': { boxShadow: '0 0 20px rgba(100, 255, 218, 0.8), 0 0 40px rgba(100, 255, 218, 0.3)' },
         },
+      },
+      backdropBlur: {
+        xs: '2px',
       },
     },
   },

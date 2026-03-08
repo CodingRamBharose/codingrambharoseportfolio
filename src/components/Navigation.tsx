@@ -54,11 +54,12 @@ export default function Navigation() {
   return (
     <>
       <nav 
-        className="space-y-4 hidden md:block"
+        className="space-y-3 hidden md:flex flex-col items-center"
         style={{ 
           position: 'fixed',
           right: '20px',
-          top: '200px',
+          top: '50%',
+          transform: 'translateY(-50%)',
           zIndex: 999999,
         }}
       >
@@ -66,16 +67,20 @@ export default function Navigation() {
           <button
             key={section.id}
             onClick={() => scrollToSection(section.id)}
-            className={`group relative block w-4 h-4 rounded-full transition-all duration-300 ${
+            className={`group relative block w-3.5 h-3.5 rounded-full transition-all duration-300 ${
               activeSection === section.id
-                ? 'bg-tech-neon scale-125'
-                : 'bg-white/30 hover:bg-white/60'
+                ? 'bg-tech-neon scale-150 shadow-[0_0_12px_rgba(100,255,218,0.6)]'
+                : 'bg-white/20 hover:bg-white/50 hover:scale-125'
             }`}
             aria-label={`Go to ${section.label}`}
           >
+            {/* Active ring */}
+            {activeSection === section.id && (
+              <span className="absolute inset-[-4px] rounded-full border border-tech-neon/40 animate-ping" style={{ animationDuration: '2s' }} />
+            )}
             {/* Tooltip */}
-            <div className="absolute right-6 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-              <div className="bg-tech-midnight text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap shadow-lg border border-tech-neon/30">
+            <div className="absolute right-8 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-all duration-300 translate-x-2 group-hover:translate-x-0 pointer-events-none">
+              <div className="bg-tech-midnight/90 backdrop-blur-md text-white px-3 py-2 rounded-lg text-sm whitespace-nowrap shadow-xl border border-tech-neon/20">
                 <span className="mr-2">{section.icon}</span>
                 {section.label}
               </div>

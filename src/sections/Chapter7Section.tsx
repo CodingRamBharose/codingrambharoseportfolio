@@ -170,7 +170,7 @@ export default function Chapter7Section() {
                 The results spoke for themselves.&quot;
               </blockquote>
               <div className="flex items-center justify-center animate-pulse">
-                <div className="text-center bg-white/5 rounded-lg !py-3 !px-6 border border-white/10">
+                <div className="text-center glass-card !py-3 !px-6">
                   <div className="text-4xl font-bold text-tech-cyan mb-2">15+</div>
                   <p className="text-gray-300">Years of Being Topper</p>
                 </div>

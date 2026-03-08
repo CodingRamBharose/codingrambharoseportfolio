@@ -13,6 +13,7 @@ import SkillsSection from '@/sections/SkillsSection';
 import ProjectsSection from '@/sections/ProjectsSection';
 import ContactSection from '@/sections/ContactSection';
 import Navigation from '@/components/Navigation';
+import MobileNav from '@/components/MobileNav';
 import LoadingScreen from '@/components/LoadingScreen';
 import ScrollProgress from '@/components/ScrollProgress';
 import CustomCursor from '@/components/CustomCursor';
@@ -36,7 +37,8 @@ export default function Home() {
         <>
           <ScrollProgress />
           <CustomCursor />
-          <Navigation /> {/* Should be here, not inside main */}
+          <Navigation />
+          <MobileNav />
           
           <main className="relative animate-fade-in">
             <HeroSection />
