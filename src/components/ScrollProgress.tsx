@@ -1,20 +1,7 @@
 'use client';
 
 import { useEffect, useState, useCallback } from 'react';
-
-const sectionLabels: Record<string, string> = {
-  'hero': 'The Beginning',
-  'chapter-1': 'Ch 1 · Village Roots',
-  'chapter-2': 'Ch 2 · English Struggle',
-  'chapter-3': 'Ch 3 · Computer Spark',
-  'chapter-4': 'Ch 4 · Phone Coding',
-  'chapter-6': 'Ch 6 · Recovery',
-  'chapter-7': 'Ch 7 · Academic Excellence',
-  'chapter-8': 'Ch 8 · NCC Aviation',
-  'skills': 'Skills & Technologies',
-  'projects': 'Projects',
-  'contact': 'Contact',
-};
+import { NAV_SECTIONS } from '@/data/story';
 
 export default function ScrollProgress() {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -22,16 +9,13 @@ export default function ScrollProgress() {
 
   const handleScroll = useCallback(() => {
     const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
-    const progress = (window.scrollY / totalHeight) * 100;
-    setScrollProgress(Math.min(progress, 100));
+    setScrollProgress(Math.min((window.scrollY / totalHeight) * 100, 100));
 
-    // Detect current section
     const scrollPosition = window.scrollY + 150;
-    const sectionIds = Object.keys(sectionLabels);
-    for (let i = sectionIds.length - 1; i >= 0; i--) {
-      const el = document.getElementById(sectionIds[i]);
+    for (let i = NAV_SECTIONS.length - 1; i >= 0; i--) {
+      const el = document.getElementById(NAV_SECTIONS[i].id);
       if (el && scrollPosition >= el.offsetTop) {
-        setCurrentSection(sectionLabels[sectionIds[i]]);
+        setCurrentSection(NAV_SECTIONS[i].progressLabel);
         break;
       }
     }
@@ -43,16 +27,12 @@ export default function ScrollProgress() {
   }, [handleScroll]);
 
   return (
-    <div className="fixed top-0 left-0 w-full z-50">
+    <div className="fixed top-0 left-0 w-full z-50 pointer-events-none">
       <div className="h-1 bg-gray-800/50">
-        <div 
-          className="h-full bg-gradient-to-r from-tech-neon via-tech-cyan to-aviation-gold transition-all duration-150 ease-out"
-          style={{ width: `${scrollProgress}%` }}
-        />
+        <div className="h-full bg-gradient-to-r from-earth-wheat via-tech-neon to-aviation-gold" style={{ width: `${scrollProgress}%` }} />
       </div>
-      {/* Chapter label */}
       {currentSection && scrollProgress > 2 && (
-        <div className="absolute top-2 left-4 sm:left-6 text-[10px] sm:text-xs text-white/60 font-medium tracking-wider uppercase transition-opacity duration-300">
+        <div key={currentSection} className="absolute top-3 left-4 sm:left-6 text-[10px] sm:text-xs text-white/70 font-semibold tracking-[0.2em] uppercase animate-rise">
           {currentSection}
         </div>
       )}

@@ -67,8 +67,8 @@ export default function LoadingScreen({ onLoadingComplete }: LoadingScreenProps)
   const getLoadingMessage = () => {
     if (progress < 20) return '🌾 Preparing the village fields...';
     if (progress < 40) return '📚 Loading the learning journey...';
-    if (progress < 60) return '💻 Setting up coding animations...';
-    if (progress < 80) return '✈️ Preparing aviation experience...';
+    if (progress < 60) return '🧊 Sculpting the 3D story world...';
+    if (progress < 80) return '✈️ Fuelling the glider for take-off...';
     if (progress < 100) return '🌅 Almost ready for sunrise...';
     if (isComplete) {
       return (
