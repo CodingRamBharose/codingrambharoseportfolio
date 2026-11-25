@@ -1,11 +1,12 @@
 'use client';
 
-import { ReactNode, RefObject, useLayoutEffect, useRef } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { ReactNode, RefObject, useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
 import { Environment, Lightformer, PerspectiveCamera, View } from '@react-three/drei';
 import * as THREE from 'three';
 import { pointer } from './pointer';
 import { easeOutBack, smoothstep, viewProgress } from './utils';
+import { trackWarmup } from '@/lib/reveal';
 
 export type Track = RefObject<HTMLElement | null>;
 type Vec3 = [number, number, number];
@@ -56,19 +57,87 @@ export function StudioEnv() {
 }
 
 /**
+ * Compiles every shader in this view off the main thread (KHR_parallel_shader_compile)
+ * before the view is first drawn. Without this, the first draw compiles synchronously,
+ * which on Windows (ANGLE / Direct3D) can freeze the page for a second or more.
+ * Placed last inside the View so its effect runs after the scene has been built.
+ */
+function Precompile({ onReady }: { onReady: () => void }) {
+  const gl = useThree((s) => s.gl);
+  const scene = useThree((s) => s.scene);
+  const get = useThree((s) => s.get);
+  const started = useRef(false);
+
+  useEffect(() => {
+    if (started.current) return;
+    started.current = true;
+    let finished = false;
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      onReady();
+    };
+
+    /**
+     * ANGLE (Chrome on Windows) finishes a shader's Direct3D variant on its first real draw.
+     * Draw the whole scene once into a single pixel while the loader still covers the page,
+     * so the first time a visitor scrolls to it, it is already warm.
+     */
+    const warmDraw = () => {
+      try {
+        const hidden: THREE.Object3D[] = [];
+        scene.traverse((o) => {
+          if (!o.visible) {
+            hidden.push(o);
+            o.visible = true;
+          }
+        });
+        const viewport = gl.getViewport(new THREE.Vector4());
+        const scissor = gl.getScissor(new THREE.Vector4());
+        const scissorTest = gl.getScissorTest();
+        const autoClear = gl.autoClear;
+        gl.autoClear = false;
+        gl.setViewport(0, 0, 1, 1);
+        gl.setScissor(0, 0, 1, 1);
+        gl.setScissorTest(true);
+        gl.render(scene, get().camera);
+        gl.clear();
+        gl.setViewport(viewport);
+        gl.setScissor(scissor);
+        gl.setScissorTest(scissorTest);
+        gl.autoClear = autoClear;
+        hidden.forEach((o) => (o.visible = false));
+      } catch {
+        // warming is only an optimisation
+      }
+      finish();
+    };
+
+    const safety = window.setTimeout(finish, 6000);
+    trackWarmup(gl.compileAsync(scene, get().camera).then(warmDraw, warmDraw));
+    return () => window.clearTimeout(safety);
+  }, [gl, scene, get, onReady]);
+
+  return null;
+}
+
+/**
  * Reserves a box in the page layout and renders its 3D scene into the shared canvas.
  * Children receive the tracked DOM element so they can react to scroll position.
  */
 export default function Stage({ className = '', label, camera, lights = true, env = false, glow, style, children }: StageProps) {
   const ref = useRef<HTMLElement>(null);
+  const [ready, setReady] = useState(false);
+  const markReady = useCallback(() => setReady(true), []);
 
   return (
     <div role="img" aria-label={label} className={`stage-3d ${className}`} style={{ ...(glow ? ({ '--stage-glow': glow } as React.CSSProperties) : {}), ...style }}>
-      <View ref={ref as React.Ref<HTMLElement>} className="absolute inset-0">
+      <View ref={ref as React.Ref<HTMLElement>} className="absolute inset-0" visible={ready}>
         <StageCamera {...camera} />
         {lights && <StageLights />}
         {env && <StudioEnv />}
         {children(ref)}
+        <Precompile onReady={markReady} />
       </View>
     </div>
   );

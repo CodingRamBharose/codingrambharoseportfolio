@@ -121,7 +121,8 @@ export default function SkillsSection() {
         {/* Technical Skills by Category */}
         <div ref={skillsRef} className="flex flex-col gap-8">
           <h3 className="font-poppins font-semibold text-2xl text-white text-center">Technical Expertise</h3>
-          <div className="grid md:grid-cols-2 gap-5 sm:gap-6">
+          {/* two flowing columns, so short cards (Salesforce, Cloud) tuck under taller ones without gaps */}
+          <div className="md:columns-2 gap-6 [&>*]:mb-5 sm:[&>*]:mb-6 [&>*]:break-inside-avoid">
             {SKILL_CATEGORIES.map((category) => {
               const categorySkills = SKILLS.filter((s) => s.category === category);
               if (categorySkills.length === 0) return null;

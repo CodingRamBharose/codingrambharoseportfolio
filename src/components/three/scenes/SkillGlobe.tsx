@@ -7,10 +7,24 @@ import Stage, { Reveal, Tilt } from '../Stage';
 import { makeCanvasTexture, roundRect, seeded } from '../utils';
 import { SKILLS } from '@/data/skills';
 
-const R = 1.95;
+const R = 2.1;
+const LABEL_H = 128;
+const LABEL_FONT = '600 44px Poppins, Inter, sans-serif';
+/** Fewer, bigger labels for a short list; smaller ones as the list grows, so they never pile up. */
+const LABEL_SCALE = Math.min(1, Math.sqrt(18 / SKILLS.length) * 1.12);
 
+let measureCtx: CanvasRenderingContext2D | null = null;
+function labelWidth(name: string) {
+  measureCtx ??= document.createElement('canvas').getContext('2d');
+  if (!measureCtx) return 480;
+  measureCtx.font = LABEL_FONT;
+  return Math.ceil(98 + measureCtx.measureText(name).width + 36);
+}
+
+/** A pill label sized to its text, so long names like "Test Framework Architecture" fit. */
 function skillTexture(name: string, icon: string, hex: string) {
-  return makeCanvasTexture(480, 128, (ctx, w, h) => {
+  const width = labelWidth(name);
+  const texture = makeCanvasTexture(width, LABEL_H, (ctx, w, h) => {
     roundRect(ctx, 4, 8, w - 8, h - 16, (h - 16) / 2);
     ctx.fillStyle = 'rgba(10, 25, 47, 0.82)';
     ctx.fill();
@@ -20,13 +34,15 @@ function skillTexture(name: string, icon: string, hex: string) {
     ctx.textBaseline = 'middle';
     ctx.font = '46px "Segoe UI Emoji", "Apple Color Emoji", "Noto Color Emoji", sans-serif';
     ctx.fillText(icon, 30, h / 2 + 3);
-    ctx.font = '600 44px Poppins, Inter, sans-serif';
+    ctx.font = LABEL_FONT;
     ctx.fillStyle = '#ffffff';
     ctx.fillText(name, 98, h / 2 + 3);
   }).texture;
+  return { texture, aspect: width / LABEL_H };
 }
 
 function Globe() {
+  const root = useRef<THREE.Group>(null);
   const spin = useRef<THREE.Group>(null);
   const sprites = useRef<(THREE.Sprite | null)[]>([]);
   const ringA = useRef<THREE.Mesh>(null);
@@ -40,11 +56,14 @@ function Globe() {
       const y = 1 - (i / (n - 1)) * 2;
       const r = Math.sqrt(1 - y * y);
       const theta = golden * i;
+      const { texture, aspect } = skillTexture(s.name, s.icon, s.hex);
       return {
         skill: s,
         pos: new THREE.Vector3(Math.cos(theta) * r * R, y * R, Math.sin(theta) * r * R),
-        tex: skillTexture(s.name, s.icon, s.hex),
-        size: 1.15 + (s.level / 100) * 0.5,
+        tex: texture,
+        aspect,
+        // label height; stronger skills read a little larger
+        size: (0.31 + (s.level / 100) * 0.13) * LABEL_SCALE,
       };
     });
   }, []);
@@ -83,7 +102,9 @@ function Globe() {
     return g;
   }, []);
 
-  useFrame(({ camera }, dt) => {
+  useFrame(({ camera, size }, dt) => {
+    // on narrow (portrait) stages, shrink the globe so the wide labels on its edges stay inside
+    if (root.current && size.width && size.height) root.current.scale.setScalar(Math.min(1, size.width / size.height / 1.2));
     if (spin.current) spin.current.rotation.y += dt * 0.18;
     if (ringA.current) ringA.current.rotation.z += dt * 0.3;
     if (ringB.current) ringB.current.rotation.z -= dt * 0.22;
@@ -94,13 +115,13 @@ function Globe() {
       const facing = world.clone().normalize().dot(camera.position.clone().normalize());
       const mat = sp.material as THREE.SpriteMaterial;
       mat.opacity = THREE.MathUtils.lerp(0.18, 1, (facing + 1) / 2);
-      const s = nodes[i].size * (0.85 + ((facing + 1) / 2) * 0.25);
-      sp.scale.set(s, s * (128 / 480), 1);
+      const h = nodes[i].size * (0.85 + ((facing + 1) / 2) * 0.25);
+      sp.scale.set(h * nodes[i].aspect, h, 1);
     });
   });
 
   return (
-    <group>
+    <group ref={root}>
       <group ref={spin}>
         <mesh>
           <icosahedronGeometry args={[R * 0.78, 2]} />
@@ -138,7 +159,7 @@ export default function SkillGlobe({ className }: { className?: string }) {
   return (
     <Stage
       className={className}
-      label="A rotating 3D globe of Ram Avtar's technical skills, from JavaScript and React to Docker and AWS"
+      label="A rotating 3D globe of Ram Avtar's technical skills, from JavaScript, React and Salesforce LWC to Playwright, RAG pipelines and Docker"
       camera={{ position: [0, 0, 7.6], fov: 40 }}
       glow="rgba(100, 255, 218, 0.18)"
     >

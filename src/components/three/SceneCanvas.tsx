@@ -32,6 +32,10 @@ export default function SceneCanvas() {
       frameloop="never"
       dpr={[1, 1.75]}
       gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
+      onCreated={({ gl }) => {
+        // reading shader error logs forces a synchronous GPU round-trip per shader; only worth it while developing
+        gl.debug.checkShaderErrors = process.env.NODE_ENV !== 'production';
+      }}
       style={{ position: 'fixed', inset: 0, width: '100%', height: '100%', pointerEvents: 'none', zIndex: 10 }}
       aria-hidden
     >

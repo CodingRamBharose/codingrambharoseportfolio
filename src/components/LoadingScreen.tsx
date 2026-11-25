@@ -3,19 +3,17 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { MILESTONES } from '@/data/story';
+import { markRevealed, resetReveal, warmupsFinished, warmupsPending } from '@/lib/reveal';
 
 interface LoadingScreenProps {
-  /** 100% reached: mount the site underneath so the curtain can lift off it. */
+  /** Downloads are done: mount the site underneath so its 3D scenes can warm up behind the loader. */
   onReveal?: () => void;
   /** The curtain is gone: unmount the loader. */
   onLoadingComplete?: () => void;
 }
 
-/** The real work the site needs before the story can start. */
-const ASSETS: (() => Promise<unknown>)[] = [
-  () => document.fonts?.ready ?? Promise.resolve(),
-  () => import('@/components/three/SceneCanvas'),
-  () => import('@/components/StarField'),
+/** Each chapter's 3D scene; every one is downloaded, then compiled and warmed on the GPU. */
+const SCENES: (() => Promise<unknown>)[] = [
   () => import('@/components/three/scenes/FarmIsland'),
   () => import('@/components/three/scenes/LetterStorm'),
   () => import('@/components/three/scenes/RetroComputer'),
@@ -27,10 +25,20 @@ const ASSETS: (() => Promise<unknown>)[] = [
   () => import('@/components/three/scenes/SkillGlobe'),
 ];
 
+/** The real work the site needs before the story can start. */
+const ASSETS: (() => Promise<unknown>)[] = [
+  () => document.fonts?.ready ?? Promise.resolve(),
+  () => import('@/components/three/SceneCanvas'),
+  () => import('@/components/StarField'),
+  ...SCENES,
+];
+
+/** Share of the bar for downloads; the rest is the 3D scenes warming up. */
+const DOWNLOAD_SHARE = 0.4;
 /** Even on a fast or cached connection, let the little flight play out. */
 const MIN_MS = 2200;
-/** Never keep anyone waiting on a stalled request. */
-const GIVE_UP_MS = 10000;
+/** Never keep anyone waiting on a stalled request or a slow GPU. */
+const GIVE_UP_MS = 12000;
 
 /** Field (bottom left) up to the sunrise (top right). */
 const ROUTE = 'M 34 132 C 150 138, 230 124, 300 92 S 450 28, 556 34';
@@ -74,20 +82,40 @@ export default function LoadingScreen({ onReveal, onLoadingComplete }: LoadingSc
     const len = path?.getTotalLength() ?? 0;
     if (path) setDots(CHAPTERS.map((_, i) => path.getPointAtLength(dotAt(i) * len)));
 
+    resetReveal();
     window.scrollTo(0, 0);
     document.body.style.overflow = 'hidden';
 
-    let done = 0;
-    let real = 0;
+    // 1) download everything; 2) mount the site behind the loader so every 3D scene compiles and
+    //    warms its shaders now, while a hiccup just looks like loading, instead of later mid-scroll
+    let downloaded = 0;
+    let siteMounted = false;
+    let gaveUp = false;
     ASSETS.forEach((load) =>
       load()
         .catch(() => undefined)
         .finally(() => {
-          done += 1;
-          real = done / ASSETS.length;
+          downloaded += 1;
+          if (downloaded === ASSETS.length && !siteMounted) {
+            siteMounted = true;
+            onRevealRef.current?.();
+          }
         }),
     );
-    const giveUp = window.setTimeout(() => (real = 1), GIVE_UP_MS);
+    const giveUp = window.setTimeout(() => {
+      gaveUp = true;
+      if (!siteMounted) {
+        siteMounted = true;
+        onRevealRef.current?.();
+      }
+    }, GIVE_UP_MS);
+
+    const realProgress = () => {
+      if (gaveUp) return 1;
+      const dl = downloaded / ASSETS.length;
+      const warm = siteMounted ? Math.min(1, warmupsFinished() / SCENES.length) : 0;
+      return DOWNLOAD_SHARE * dl + (1 - DOWNLOAD_SHARE) * warm;
+    };
 
     const start = performance.now();
     let last = start;
@@ -97,42 +125,52 @@ export default function LoadingScreen({ onReveal, onLoadingComplete }: LoadingSc
     const timers: number[] = [];
     let tl: gsap.core.Timeline | undefined;
 
+    /** Wait for a few smooth frames in a row before the lift, capped so a slow device still gets in. */
+    const whenSettled = (cb: () => void) => {
+      const begin = performance.now();
+      let prev = begin;
+      let smoothSince = begin;
+      const step = (now: number) => {
+        if (now - prev > 34 || warmupsPending() > 0) smoothSince = now;
+        prev = now;
+        if (now - smoothSince > 250 || now - begin > 2500) cb();
+        else raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    };
+
+    const lift = () => {
+      markRevealed();
+      tl = gsap.timeline({
+        onComplete: () => {
+          document.body.style.overflow = '';
+          onCompleteRef.current?.();
+        },
+      });
+      if (reduced) {
+        tl.to(rootRef.current, { opacity: 0, duration: 0.4 });
+      } else {
+        tl.to(contentRef.current, { y: -40, opacity: 0, duration: 0.45, ease: 'power2.in' }).to(
+          rootRef.current,
+          { yPercent: -100, duration: 1, ease: 'power3.inOut' },
+          0.1,
+        );
+      }
+    };
+
     const exit = () => {
       setIsComplete(true);
       if (!reduced && planeRef.current) {
-        gsap.to(planeRef.current, { x: 70, y: -26, scale: 0.4, opacity: 0, duration: 0.7, ease: 'power2.in' });
+        gsap.to(planeRef.current, { x: 70, y: -26, scale: 0.4, opacity: 0, duration: 0.6, ease: 'power2.in' });
       }
-      timers.push(
-        window.setTimeout(() => {
-          onRevealRef.current?.();
-          // give the site two frames to mount before the curtain moves, so the lift stays smooth
-          requestAnimationFrame(() =>
-            requestAnimationFrame(() => {
-              tl = gsap.timeline({
-                onComplete: () => {
-                  document.body.style.overflow = '';
-                  onCompleteRef.current?.();
-                },
-              });
-              if (reduced) {
-                tl.to(rootRef.current, { opacity: 0, duration: 0.4 });
-              } else {
-                tl.to(contentRef.current, { y: -40, opacity: 0, filter: 'blur(6px)', duration: 0.5, ease: 'power2.in' }).to(
-                  rootRef.current,
-                  { yPercent: -100, duration: 1.1, ease: 'power3.inOut' },
-                  0.15,
-                );
-              }
-            }),
-          );
-        }, reduced ? 150 : 650),
-      );
+      // let the plane finish its fly-off, then lift the curtain off the (already warm) site
+      timers.push(window.setTimeout(() => whenSettled(lift), reduced ? 100 : 650));
     };
 
     const tick = (now: number) => {
       const dt = Math.min(0.05, (now - last) / 1000);
       last = now;
-      const target = Math.min(real, (now - start) / minMs);
+      const target = Math.min(realProgress(), (now - start) / minMs);
       p += (target - p) * Math.min(1, dt * 5);
       if (target - p < 0.002) p = target;
       setProgress(p);
@@ -178,8 +216,10 @@ export default function LoadingScreen({ onReveal, onLoadingComplete }: LoadingSc
   return (
     <div
       ref={rootRef}
-      className="loading-screen fixed inset-0 z-[1000001] overflow-hidden flex items-center justify-center"
-      style={{ background: 'linear-gradient(to bottom, #070d1f 0%, #0A192F 55%, rgb(15, 32, 72) 100%)' }}
+      className="loading-screen fixed inset-0 z-[1000001] overflow-hidden flex items-center justify-center will-change-transform"
+      // 99.5% opaque on purpose: a fully opaque cover lets Chrome skip painting the page beneath it,
+      // and then all of that painting lands on the frames of the curtain lift
+      style={{ background: 'linear-gradient(to bottom, rgba(7,13,31,0.995) 0%, rgba(10,25,47,0.995) 55%, rgba(15,32,72,0.995) 100%)' }}
       aria-label="Loading screen"
     >
       {/* stars fade as the dawn comes up */}
@@ -208,7 +248,7 @@ export default function LoadingScreen({ onReveal, onLoadingComplete }: LoadingSc
         aria-hidden
       />
 
-      <div ref={contentRef} className="relative w-full px-6 flex flex-col items-center text-center">
+      <div ref={contentRef} className="relative w-full px-6 flex flex-col items-center text-center will-change-[transform,opacity]">
         <p className="flex items-center gap-3 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.35em] text-tech-neon/80">
           <span className="h-px w-8 sm:w-12 bg-gradient-to-r from-transparent to-tech-neon/80" />
           Ram Avtar

@@ -11,6 +11,7 @@ import banner from '../assets/banner.png';
 import logo from '../assets/logo.png';
 import LeetCodeIcon from '@/components/LeetCodeIcon';
 import { scrollToTarget } from '@/lib/smooth';
+import { whenRevealed } from '@/lib/reveal';
 
 const StarField = dynamic(() => import('@/components/StarField'), { ssr: false });
 
@@ -39,10 +40,12 @@ export default function HeroSection() {
   });
 
   useEffect(() => {
+    const textItems = Array.from(textRef.current?.children || []);
     const ctx = gsap.context(() => {
-      // entrance
-      gsap.from(textRef.current?.children || [], { y: 40, opacity: 0, filter: 'blur(8px)', duration: 1.1, stagger: 0.12, ease: 'expo.out', delay: 0.2 });
-      gsap.from(bannerRef.current, { y: 80, opacity: 0, scale: 0.92, duration: 1.4, ease: 'expo.out' });
+      // entrance: hold everything in its start pose until the loading curtain lifts.
+      // 0.001 rather than 0 so Chrome still paints it behind the loader (opacity 0 skips painting).
+      gsap.set(textItems, { y: 40, opacity: 0.001, willChange: 'transform, opacity' });
+      gsap.set(bannerRef.current, { y: 80, opacity: 0.001, scale: 0.92 });
 
       // the banner drifts up slower than the page: depth
       gsap.to(bannerRef.current, {
@@ -78,7 +81,25 @@ export default function HeroSection() {
       });
     }, heroRef);
 
-    return () => ctx.revert();
+    const stopWaiting = whenRevealed(() =>
+      ctx.add(() => {
+        gsap.to(textItems, {
+          y: 0,
+          opacity: 1,
+          duration: 1.1,
+          stagger: 0.1,
+          ease: 'expo.out',
+          delay: 0.35,
+          clearProps: 'willChange', // drop the extra layers once they are in place
+        });
+        gsap.to(bannerRef.current, { y: 0, opacity: 1, scale: 1, duration: 1.4, ease: 'expo.out', delay: 0.25 });
+      }),
+    );
+
+    return () => {
+      stopWaiting();
+      ctx.revert();
+    };
   }, []);
 
   const socialClass =
@@ -104,7 +125,8 @@ export default function HeroSection() {
         }}
       />
 
-      <div ref={bannerRef} className="relative z-20 w-[260px] sm:w-[340px] md:w-[440px] lg:w-[540px]">
+      {/* own compositor layer: the entrance and scroll parallax then never repaint the big drop shadow */}
+      <div ref={bannerRef} className="relative z-20 w-[260px] sm:w-[340px] md:w-[440px] lg:w-[540px] will-change-transform">
         <div className="absolute inset-[15%] rounded-full bg-tech-neon/15 blur-3xl" />
         <Image src={banner} alt="Illustration of Ram Avtar's journey from the village to the server" width={600} height={600} className="relative object-contain drop-shadow-2xl" priority />
       </div>
