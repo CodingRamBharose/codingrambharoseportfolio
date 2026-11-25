@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import HeroSection from '@/sections/HeroSection';
 import Chapter1Section from '@/sections/Chapter1Section';
 import Chapter2Section from '@/sections/Chapter2Section';
@@ -9,37 +10,36 @@ import Chapter4Section from '@/sections/Chapter4Section';
 import Chapter6Section from '@/sections/Chapter6Section';
 import Chapter7Section from '@/sections/Chapter7Section';
 import Chapter8Section from '@/sections/Chapter8Section';
+import FlightPathSection from '@/sections/FlightPathSection';
 import SkillsSection from '@/sections/SkillsSection';
-import ProjectsSection from '@/sections/ProjectsSection';
 import ContactSection from '@/sections/ContactSection';
 import Navigation from '@/components/Navigation';
 import MobileNav from '@/components/MobileNav';
 import LoadingScreen from '@/components/LoadingScreen';
 import ScrollProgress from '@/components/ScrollProgress';
 import CustomCursor from '@/components/CustomCursor';
+import SmoothScroll from '@/components/SmoothScroll';
+
+// One shared WebGL canvas renders every chapter's 3D model
+const SceneCanvas = dynamic(() => import('@/components/three/SceneCanvas'), { ssr: false });
 
 export default function Home() {
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
 
-  const handleLoadingComplete = () => {
-    setIsLoadingComplete(true);
-  };
-
   return (
     <>
-      {/* Loading Screen - Always shows first */}
-      {!isLoadingComplete && (
-        <LoadingScreen onLoadingComplete={handleLoadingComplete} />
-      )}
+      {!isLoadingComplete && <LoadingScreen onLoadingComplete={() => setIsLoadingComplete(true)} />}
 
-      {/* Main Content - Only shows after loading is complete */}
       {isLoadingComplete && (
         <>
+          <SmoothScroll />
+          <SceneCanvas />
           <ScrollProgress />
           <CustomCursor />
           <Navigation />
           <MobileNav />
-          
+          <div className="grain" aria-hidden />
+
           <main className="relative animate-fade-in">
             <HeroSection />
             <Chapter1Section />
@@ -49,8 +49,8 @@ export default function Home() {
             <Chapter6Section />
             <Chapter7Section />
             <Chapter8Section />
+            <FlightPathSection />
             <SkillsSection />
-            <ProjectsSection />
             <ContactSection />
           </main>
         </>
@@ -58,4 +58,3 @@ export default function Home() {
     </>
   );
 }
-
