@@ -24,13 +24,16 @@ import SmoothScroll from '@/components/SmoothScroll';
 const SceneCanvas = dynamic(() => import('@/components/three/SceneCanvas'), { ssr: false });
 
 export default function Home() {
-  const [isLoadingComplete, setIsLoadingComplete] = useState(false);
+  // loading -> revealing (site mounts under the lifting curtain) -> done
+  const [phase, setPhase] = useState<'loading' | 'revealing' | 'done'>('loading');
 
   return (
     <>
-      {!isLoadingComplete && <LoadingScreen onLoadingComplete={() => setIsLoadingComplete(true)} />}
+      {phase !== 'done' && (
+        <LoadingScreen onReveal={() => setPhase('revealing')} onLoadingComplete={() => setPhase('done')} />
+      )}
 
-      {isLoadingComplete && (
+      {phase !== 'loading' && (
         <>
           <SmoothScroll />
           <SceneCanvas />
